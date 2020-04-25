@@ -2,7 +2,7 @@ import 'reflect-metadata'
 import { PORT } from './env'
 import { createConnection } from 'typeorm'
 import { createApp } from './app'
-import { connectionOptions } from '../ormconfig'
+import { connectionOptions } from './ormconfig'
 
 createConnection(connectionOptions)
     .then(() => createApp())
