@@ -17,10 +17,11 @@ const create = async (
 }
 
 const getAll = async (
-    page: number,
-    getUsers: (page: number) => Promise<User[]>,
+    offset: number,
+    limit: number,
+    getUsers: (offset: number, limit: number) => Promise<User[]>,
     mapUserToResponse: (user: User) => Promise<IGetUserResponseModel>): Promise<IGetUserResponseModel[]> => {
-        const users = await getUsers(page)
+        const users = await getUsers(offset, limit)
         const response = users.map(async (user) => await mapUserToResponse(user))
         return Promise.all(response)
 }

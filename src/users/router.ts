@@ -3,7 +3,7 @@ import { create, getAll } from './services'
 import { mapCreateUserRequestToUser, mapUserToCreateUserResponse, mapUserToGetUserResponse } from './mappers'
 import { hashPassword } from '../di'
 import { validateCreateUserRequestModel } from './validators'
-import { sendResponseModel } from '../express-models'
+import { sendResponseModel } from '../express-tools'
 import { getUsers, saveUser } from './storage'
 
 const usersRouter = express.Router()
@@ -19,8 +19,9 @@ const processRequest = async (res: Response, processor: () => Promise<void>) => 
 
 usersRouter.get('/', async (req: Request, res: Response) => {
     processRequest(res, async () => {
-        const page: number = parseInt(req.query.page as string, 10)
-        const response = await getAll(page, getUsers, mapUserToGetUserResponse)
+        const offset: number = parseInt(req.query.offset as string, 10)
+        const limit: number = parseInt(req.query.limit as string, 10)
+        const response = await getAll(offset, limit, getUsers, mapUserToGetUserResponse)
         res.status(200).send(response)
     })
 })
