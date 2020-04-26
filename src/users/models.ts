@@ -1,7 +1,7 @@
-import { IsString, Length, IsEmail } from 'class-validator'
+import { IsString, Length, IsEmail, IsNotEmpty, MaxLength } from 'class-validator'
 import { IsUserNameAlreadyInUse, IsUserEmailAlreadyInUse } from './validation'
 
-interface ICreateUserRequestModel {
+export interface ICreateUserRequestModel {
     firstName: string
     lastName: string
     userName: string
@@ -9,7 +9,7 @@ interface ICreateUserRequestModel {
     password: string
 }
 
-class CreateUserRequestModel implements ICreateUserRequestModel {
+export class CreateUserRequestModel implements ICreateUserRequestModel {
     constructor(model: ICreateUserRequestModel) {
         this.firstName = model.firstName
         this.lastName = model.lastName
@@ -18,28 +18,34 @@ class CreateUserRequestModel implements ICreateUserRequestModel {
         this.password = model.password
     }
 
+    @IsNotEmpty()
     @IsString()
-    @Length(1, 50)
+    @MaxLength(50)
     firstName: string
 
+    @IsNotEmpty()
     @IsString()
-    @Length(0, 50)
+    @MaxLength(50)
     lastName: string
 
+    @IsNotEmpty()
     @IsString()
-    @Length(1, 100)
+    @MaxLength(100)
     @IsUserNameAlreadyInUse()
     userName: string
 
+    @IsNotEmpty()
     @IsEmail()
+    @MaxLength(254)
     @IsUserEmailAlreadyInUse()
     email: string
 
+    @IsNotEmpty()
     @IsString()
     password: string
 }
 
-interface ICreateUserResponseModel {
+export interface ICreateUserResponseModel {
     id: number
     firstName: string
     lastName: string
@@ -47,12 +53,10 @@ interface ICreateUserResponseModel {
     email: string
 }
 
-interface IGetUserResponseModel {
+export interface IGetUserResponseModel {
     id: number
     firstName: string
     lastName: string
     userName: string
     email: string
 }
-
-export { ICreateUserRequestModel, CreateUserRequestModel, ICreateUserResponseModel, IGetUserResponseModel }

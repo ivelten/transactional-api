@@ -1,6 +1,7 @@
 import { Entity, PrimaryColumn, Column, OneToMany, OneToOne } from 'typeorm'
 import { TransactionInstallment } from './transaction-installment'
 import { TransactionConciliation } from './transaction-conciliation'
+import Decimal from 'decimal.js'
 
 @Entity()
 export class Transaction {
@@ -18,6 +19,18 @@ export class Transaction {
 
     @Column({ length: 100, nullable: true })
     customerName: string
+
+    @Column({ length: 15, nullable: true })
+    customerDocument: string
+
+    @Column({ length: 16 })
+    creditCardNumber: string
+
+    @Column('decimal', { precision: 13, scale: 2 })
+    value: Decimal
+
+    @Column('decimal', { precision: 13, scale: 2 })
+    usdValue: Decimal
 
     @OneToMany(_ => TransactionInstallment, i => i.transaction)
     installments: TransactionInstallment[]

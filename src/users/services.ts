@@ -3,7 +3,7 @@ import { User } from '../entity/user'
 import { ResponseModel, makeResponseModel } from '../models'
 import { ValidationError } from 'class-validator'
 
-const create = async (
+export const create = async (
     request: ICreateUserRequestModel,
     validateRequest: (request: ICreateUserRequestModel) => Promise<ValidationError[]>,
     mapRequestToUser: (request: ICreateUserRequestModel) => Promise<User>,
@@ -13,10 +13,10 @@ const create = async (
             var user = await mapRequestToUser(request)
             user = await saveUser(user)
             return await mapUserToResponse(user)
-        })
+    })
 }
 
-const getAll = async (
+export const getAll = async (
     offset: number,
     limit: number,
     getUsers: (offset: number, limit: number) => Promise<User[]>,
@@ -25,5 +25,3 @@ const getAll = async (
         const response = users.map(async (user) => await mapUserToResponse(user))
         return Promise.all(response)
 }
-
-export { create, getAll }

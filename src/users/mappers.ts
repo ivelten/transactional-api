@@ -1,7 +1,7 @@
 import { CreateUserRequestModel, ICreateUserResponseModel, IGetUserResponseModel } from './models'
 import { User } from '../entity/user'
 
-const mapCreateUserRequestToUser = 
+export const mapCreateUserRequestToUser = 
     (hashPassword: (password: string) => Promise<string>) => 
         async (request: CreateUserRequestModel): Promise<User> => {
             const user = new User()
@@ -11,9 +11,9 @@ const mapCreateUserRequestToUser =
             user.passwordHash = await hashPassword(request.password)
             user.userName = request.userName
             return user
-        }
+}
 
-const mapUserToCreateUserResponse = async (user: User): Promise<ICreateUserResponseModel> => {
+export const mapUserToCreateUserResponse = async (user: User): Promise<ICreateUserResponseModel> => {
     return {
         id: user.id,
         email: user.email,
@@ -23,7 +23,7 @@ const mapUserToCreateUserResponse = async (user: User): Promise<ICreateUserRespo
     }
 }
 
-const mapUserToGetUserResponse = async (user: User): Promise<IGetUserResponseModel> => {
+export const mapUserToGetUserResponse = async (user: User): Promise<IGetUserResponseModel> => {
     return {
         id: user.id,
         email: user.email,
@@ -32,5 +32,3 @@ const mapUserToGetUserResponse = async (user: User): Promise<IGetUserResponseMod
         userName: user.userName
     }
 }
-
-export { mapCreateUserRequestToUser, mapUserToCreateUserResponse, mapUserToGetUserResponse }
