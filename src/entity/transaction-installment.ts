@@ -1,4 +1,4 @@
-import { Entity, PrimaryColumn, Column, ManyToOne, OneToOne, RelationId } from 'typeorm'
+import { Entity, PrimaryColumn, Column, ManyToOne, OneToOne, RelationId, JoinColumn } from 'typeorm'
 import { Transaction } from './transaction'
 import { TransactionInstallmentConciliation } from './transaction-installment-conciliation'
 
@@ -10,16 +10,17 @@ export class TransactionInstallment {
         this.value = value
     }
 
-    @PrimaryColumn({ length: 37 })
+    @PrimaryColumn({ name: 'transaction_id', length: 37 })
     transactionId: string
 
-    @PrimaryColumn('tinyint')
+    @PrimaryColumn('tinyint', { name: 'installment_number' })
     installmentNumber: number
 
     @Column('decimal', { precision: 13, scale: 2 })
     value: number
 
     @ManyToOne(_ => Transaction, t => t.installments)
+    @JoinColumn({ name: 'transaction_id', referencedColumnName: 'id' })
     transaction: Transaction
 
     @OneToOne(_ => TransactionInstallmentConciliation, c => c.installment, { nullable: true })

@@ -10,16 +10,16 @@ export class TransactionInstallmentConciliation {
         this.paymentDate = paymentDate
     }
 
-    @PrimaryColumn({ length: 37 })
+    @PrimaryColumn({ name: 'transaction_id', length: 37 })
     transactionId: string
 
-    @PrimaryColumn('tinyint')
+    @PrimaryColumn('tinyint', { name: 'installment_number' })
     installmentNumber: number
 
-    @Column('decimal', { precision: 13, scale: 2 })
+    @Column('decimal', { name: 'net_value', precision: 13, scale: 2 })
     netValue: number
 
-    @Column('timestamp')
+    @Column('timestamp', { name: 'payment_date' })
     paymentDate: Date
 
     @OneToOne(_ => TransactionInstallment, i => i.conciliation)

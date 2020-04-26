@@ -1,4 +1,4 @@
-import { Entity, PrimaryColumn, Column, OneToMany, OneToOne, ManyToOne, RelationId } from 'typeorm'
+import { Entity, PrimaryColumn, Column, OneToMany, OneToOne, ManyToOne, RelationId, JoinColumn } from 'typeorm'
 import { TransactionInstallment } from './transaction-installment'
 import { TransactionConciliation } from './transaction-conciliation'
 import Decimal from 'decimal.js'
@@ -30,28 +30,28 @@ export class Transaction {
     @PrimaryColumn({ length: 37 })
     id: string
 
-    @Column()
+    @Column({ name: 'merchant_id' })
     merchantId: number
 
-    @Column('timestamp')
+    @Column('timestamp', { name: 'authorization_date' })
     authorizationDate: Date
 
-    @Column({ length: 100, nullable: true })
+    @Column({ name: 'invoice_number', length: 100, nullable: true })
     invoiceNumber: string
 
-    @Column({ length: 100, nullable: true })
+    @Column({ name: 'customer_name', length: 100, nullable: true })
     customerName: string
 
-    @Column({ length: 15, nullable: true })
+    @Column({ name: 'customer_document', length: 15, nullable: true })
     customerDocument: string
 
-    @Column({ length: 16 })
+    @Column({ name: 'credit_card_number', length: 16 })
     creditCardNumber: string
 
     @Column('decimal', { precision: 13, scale: 2 })
     value: number
 
-    @Column('decimal', { precision: 13, scale: 2 })
+    @Column('decimal', { name: 'usd_value', precision: 13, scale: 2 })
     usdValue: number
 
     @OneToMany(_ => TransactionInstallment, i => i.transaction)
@@ -61,5 +61,6 @@ export class Transaction {
     conciliation?: TransactionConciliation
 
     @ManyToOne(_ => User, u => u.transactions)
+    @JoinColumn({ name: 'merchant_id', referencedColumnName: 'id' })
     merchant: User
 }

@@ -6,13 +6,13 @@ export class User {
     @PrimaryGeneratedColumn()
     id: number
 
-    @Column({ length: 50 })
+    @Column({ name: 'first_name', length: 50 })
     firstName: string
 
-    @Column({ length: 50 })
+    @Column({ name: 'last_name', length: 50 })
     lastName: string
     
-    @Column({ length: 100 })
+    @Column({ name: 'user_name', length: 100 })
     @Unique(['userName'])
     userName: string
 
@@ -20,12 +20,12 @@ export class User {
     @Unique(['email'])
     email: string
     
-    @Column({ length: 60 })
+    @Column({ name: 'password_hash', length: 60 })
     passwordHash: string
 
     @OneToMany(_ => Transaction, t => t.merchant)
     transactions: Transaction[]
 
-    @Column('decimal', { precision: 5, scale: 2 })
+    @Column('decimal', { name: 'base_tax', precision: 5, scale: 2 })
     baseTax: number
 }
