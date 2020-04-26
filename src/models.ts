@@ -11,8 +11,7 @@ const isBadRequest = <T>(response: ResponseModel<T>): boolean => {
 }
 
 const makeResponseModel = <T>(validationErrors: ValidationError[], responseFactory: () => T) => {
-    if (validationErrors.length > 0)
-        return { validationErrors: validationErrors }
+    if (validationErrors.length > 0) return { validationErrors: validationErrors }
     return responseFactory()
 }
 

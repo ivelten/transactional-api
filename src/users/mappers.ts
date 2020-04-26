@@ -1,9 +1,10 @@
 import { CreateUserRequestModel, ICreateUserResponseModel, IGetUserResponseModel } from './models'
 import { User } from '../entity/user'
+import { mapper } from '../di'
 
 export const mapCreateUserRequestToUser = 
-    (hashPassword: (password: string) => Promise<string>) => 
-        async (request: CreateUserRequestModel): Promise<User> => {
+    (hashPassword: (password: string) => Promise<string>) =>
+        mapper(async (request: CreateUserRequestModel): Promise<User> => {
             const user = new User()
             user.firstName = request.firstName
             user.lastName = request.lastName
@@ -11,24 +12,26 @@ export const mapCreateUserRequestToUser =
             user.passwordHash = await hashPassword(request.password)
             user.userName = request.userName
             return user
-}
+})
 
-export const mapUserToCreateUserResponse = async (user: User): Promise<ICreateUserResponseModel> => {
-    return {
-        id: user.id,
-        email: user.email,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        userName: user.userName
-    }
-}
+export const mapUserToCreateUserResponse = 
+    mapper(async (user: User): Promise<ICreateUserResponseModel> => {
+        return {
+            id: user.id,
+            email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            userName: user.userName
+        }
+})
 
-export const mapUserToGetUserResponse = async (user: User): Promise<IGetUserResponseModel> => {
-    return {
-        id: user.id,
-        email: user.email,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        userName: user.userName
-    }
-}
+export const mapUserToGetUserResponse = 
+    mapper(async (user: User): Promise<IGetUserResponseModel> => {
+        return {
+            id: user.id,
+            email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            userName: user.userName
+        }
+})

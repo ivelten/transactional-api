@@ -9,3 +9,7 @@ export const saveUser = async (user: User): Promise<User> => {
 export const getUsers = paginateWithDefaults(async (offset: number, limit: number): Promise<User[]> => {
     return await getConnection().getRepository(User).find({ take: limit, skip: offset })
 })
+
+export const getUser = async (id: number): Promise<User> => {
+    return await getConnection().getRepository(User).findOne(id)
+}

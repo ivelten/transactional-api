@@ -4,8 +4,11 @@ import { User } from '../entity/user'
 
 export function IsUserNameAlreadyInUse(validationOptions?: ValidationOptions) {
     return function (object: Object, propertyName: string) {
-        if (!validationOptions)
-            validationOptions = { message: `${propertyName} contains an user name that is already been used by another user` }
+        if (!validationOptions) {
+            validationOptions = { 
+                message: `${propertyName} contains an user name that is already been used by another user`
+            }
+        }
 
         registerDecorator({
             target: object.constructor,
@@ -15,8 +18,7 @@ export function IsUserNameAlreadyInUse(validationOptions?: ValidationOptions) {
             name: 'isUserNameAlreadyInUse',
             validator: {
                 async validate(value: any, _validationArguments?: ValidationArguments) {
-                    if (await getConnection().getRepository(User).findOne({ userName: value }))
-                        return false
+                    if (await getConnection().getRepository(User).findOne({ userName: value })) return false
                     return true
                 }
             }
