@@ -3,6 +3,11 @@ import { Transaction } from './transaction'
 
 @Entity()
 export class TransactionConciliation {
+    constructor(transactionId: string, baseTax: number) {
+        this.transactionId = transactionId
+        this.baseTax = baseTax
+    }
+
     @PrimaryColumn({ length: 37 })
     @RelationId((self: TransactionConciliation) => self.transaction)
     transactionId: string

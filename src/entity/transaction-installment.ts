@@ -4,12 +4,10 @@ import { TransactionInstallmentConciliation } from './transaction-installment-co
 
 @Entity()
 export class TransactionInstallment {
-    constructor(installmentNumber: number, value: number, transaction: Transaction) {
-        if (transaction) {
-            this.transactionId = transaction.id
-            this.installmentNumber = installmentNumber
-            this.value = value
-        }
+    constructor(installmentNumber: number, value: number, transactionId: string) {
+        this.transactionId = transactionId
+        this.installmentNumber = installmentNumber
+        this.value = value
     }
 
     @PrimaryColumn({ length: 37 })

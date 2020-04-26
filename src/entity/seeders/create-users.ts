@@ -9,8 +9,8 @@ export class CreateUsers implements Seeder {
     async run(_: Factory, connection: Connection): Promise<any> {
         const passwordHash = await bcrypt.hash('password', SALT_ROUNDS)
         await insertInto(connection, User, [
-            { firstName: 'Ismael', lastName: 'Velten', userName: 'ivelten', email: 'ismaelcarlosvelten@gmail.com', passwordHash },
-            { firstName: 'Test', lastName: 'Merchant', userName: 'brydge', email: 'brydge.test.merchant@gmail.com', passwordHash }
+            { firstName: 'Ismael', lastName: 'Velten', userName: 'ivelten', email: 'ismaelcarlosvelten@gmail.com', passwordHash, baseTax: 2.5 },
+            { firstName: 'Test', lastName: 'Merchant', userName: 'brydge', email: 'brydge.test.merchant@gmail.com', passwordHash, baseTax: 3.0 }
         ])
     }
 }

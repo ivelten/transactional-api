@@ -10,7 +10,7 @@ export const create = async (
     saveUser: (user: User) => Promise<User>,
     mapUserToResponse: (user: User) => Promise<ICreateUserResponseModel>): Promise<ResponseModel<ICreateUserResponseModel>> => {
         return makeResponseModel(await validateRequest(request), async () => {
-            var user = await mapRequestToUser(request)
+            let user = await mapRequestToUser(request)
             user = await saveUser(user)
             return await mapUserToResponse(user)
     })

@@ -6,20 +6,21 @@ import { v4 as uuidv4 } from 'uuid'
 
 export const mapAuthorizeTransactionRequestToTransaction = (getUsdValue: (brlValue: number) => Promise<number>) =>
     mapper(async (request: IAuthorizeTransactionRequestModel): Promise<Transaction> => {
-        const now = new Date()
+        const authorizationDate = new Date()
         const id = uuidv4()
         const usdValue = await getUsdValue(request.payment.value)
         return new Transaction(
             id,
-            now,
+            request.merchantId,
+            authorizationDate,
             request.payment.creditCardNumber,
             request.payment.value,
             usdValue,
-            request.payment.installmentCount,
             request.invoiceNumber,
             request.customerName,
             request.customerDocument)
 })
+
 
 export const mapTransactionInstallmentToProcessedTransactionInstallmentResponse = 
     mapper(async (installment: TransactionInstallment): Promise<IProcessedTransactionInstallmentModel> => {
@@ -31,15 +32,9 @@ export const mapTransactionInstallmentToProcessedTransactionInstallmentResponse 
 
 export const mapTransactionToProcessedTransactionResponse = 
     mapper(async (transaction: Transaction): Promise<IProcessedTransactionResponseModel> => {
-        const installments = 
-            transaction.installments
-                ? await Promise.all(transaction.installments.map(async (installment) => 
-                    await mapTransactionInstallmentToProcessedTransactionInstallmentResponse(installment)))
-                : []
-
         return {
             creditCardNumber: transaction.creditCardNumber,
-            installments: installments,
+            installments: transaction.installments,
             transactionId: transaction.id,
             usdValue: transaction.usdValue,
             value: transaction.value

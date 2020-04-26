@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express'
 import { processRequest, getUsdValue } from '../di'
 import { getAll, get, authorize } from './services'
-import { getTransactions, getTransaction, saveTransaction, subtractValueFromCreditCardBalance } from './storage'
+import { getTransactions, getTransaction, saveTransaction, subtractValueFromCreditCardBalance, conciliateTransaction, getMerchantBaseTax, saveTransactionInstallments } from './storage'
 import { mapTransactionToProcessedTransactionResponse, mapAuthorizeTransactionRequestToTransaction } from './mappers'
 import { sendResponseModel } from '../express-tools'
 import { validateAuthorizeTransactionRequestModel } from './validators'
@@ -34,6 +34,9 @@ transactionsRouter.post('/', async (req: Request, res: Response) => {
             subtractValueFromCreditCardBalance,
             mapRequest,
             saveTransaction,
+            saveTransactionInstallments,
+            getMerchantBaseTax,
+            conciliateTransaction,
             mapTransactionToProcessedTransactionResponse)
         sendResponseModel(response, res)
     })

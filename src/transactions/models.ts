@@ -1,4 +1,4 @@
-import { IsString, IsNumber, MaxLength, IsBoolean, IsCreditCard, IsOptional, IsInt, ValidateNested } from 'class-validator'
+import { IsString, IsNumber, MaxLength, IsBoolean, IsCreditCard, IsOptional, IsInt, ValidateNested, IsNotEmpty } from 'class-validator'
 import { IsCreditCardUsable } from './validation'
 
 export interface IPaymentModel {
@@ -18,6 +18,7 @@ export class PaymentModel implements IPaymentModel {
 
     creditCardNumber: string
 
+    @IsNotEmpty()
     @IsNumber({ maxDecimalPlaces: 2, allowNaN: false, allowInfinity: false }, { message: "value must be a monetary value in BRL coin (number with two decimal places)" })
     value: number
 
@@ -27,6 +28,7 @@ export class PaymentModel implements IPaymentModel {
 }
 
 export interface IAuthorizeTransactionRequestModel {
+    merchantId: number
     customerName?: string
     invoiceNumber?: string
     customerDocument?: string
@@ -36,12 +38,17 @@ export interface IAuthorizeTransactionRequestModel {
 export class AuthorizeTransactionRequestModel implements IAuthorizeTransactionRequestModel {
     constructor(model: IAuthorizeTransactionRequestModel) {
         if (model) {
+            this.merchantId = model.merchantId
             this.customerName = model.customerName
             this.invoiceNumber = model.invoiceNumber
             this.customerDocument = model.customerDocument
             this.payment = new PaymentModel(model.payment)
         }
     }
+
+    @IsInt()
+    @IsNotEmpty()
+    merchantId: number
 
     @IsString()
     @IsOptional()
@@ -60,6 +67,7 @@ export class AuthorizeTransactionRequestModel implements IAuthorizeTransactionRe
 
     @IsCreditCardUsable()
     @ValidateNested()
+    @IsNotEmpty()
     payment: IPaymentModel
 }
 

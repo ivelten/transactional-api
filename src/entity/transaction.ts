@@ -1,33 +1,23 @@
-import { Entity, PrimaryColumn, Column, OneToMany, OneToOne } from 'typeorm'
+import { Entity, PrimaryColumn, Column, OneToMany, OneToOne, ManyToOne, RelationId } from 'typeorm'
 import { TransactionInstallment } from './transaction-installment'
 import { TransactionConciliation } from './transaction-conciliation'
 import Decimal from 'decimal.js'
-
-const buildInstallments = (transaction: Transaction, installmentCount: number): TransactionInstallment[] => {
-    const otherInstallmentsValue = Decimal.div(transaction.value, installmentCount).toDecimalPlaces(2)
-    const remainingValue = Decimal.mul(otherInstallmentsValue, installmentCount - 1)
-    const firstInstallmentValue = Decimal.sub(transaction.value, remainingValue)
-    const installments: TransactionInstallment[] = [ new TransactionInstallment(1, firstInstallmentValue.toNumber(), transaction) ]
-
-    for (var i = 2; i <= installmentCount; i++)
-        installments.push(new TransactionInstallment(i, otherInstallmentsValue.toNumber(), transaction))
-
-    return installments
-}
+import { User } from './user'
 
 @Entity()
 export class Transaction {
     constructor(
         id: string,
+        merchantId: number,
         authorizationDate: Date,
         creditCardNumber: string,
         value: number,
         usdValue: number,
-        installmentCount?: number,
         invoiceNumber?: string,
         customerName?: string,
         customerDocument?: string) {
             this.id = id
+            this.merchantId = merchantId
             this.authorizationDate = authorizationDate
             this.creditCardNumber = creditCardNumber
             this.value = value
@@ -35,11 +25,14 @@ export class Transaction {
             this.invoiceNumber = invoiceNumber
             this.customerName = customerName
             this.customerDocument = customerDocument
-            if (installmentCount) this.installments = buildInstallments(this, installmentCount)
     }
 
     @PrimaryColumn({ length: 37 })
     id: string
+
+    @Column()
+    @RelationId((self: Transaction) => self.merchant)
+    merchantId: number
 
     @Column('timestamp')
     authorizationDate: Date
@@ -67,4 +60,7 @@ export class Transaction {
 
     @OneToOne(_ => TransactionConciliation, c => c.transaction, { nullable: true })
     conciliation?: TransactionConciliation
+
+    @ManyToOne(_ => User, u => u.transactions)
+    merchant: User
 }
