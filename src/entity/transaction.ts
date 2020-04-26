@@ -31,7 +31,6 @@ export class Transaction {
     id: string
 
     @Column()
-    @RelationId((self: Transaction) => self.merchant)
     merchantId: number
 
     @Column('timestamp')

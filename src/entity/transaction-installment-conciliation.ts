@@ -11,11 +11,9 @@ export class TransactionInstallmentConciliation {
     }
 
     @PrimaryColumn({ length: 37 })
-    @RelationId((self: TransactionInstallmentConciliation) => self.installment)
     transactionId: string
 
     @PrimaryColumn('tinyint')
-    @RelationId((self: TransactionInstallmentConciliation) => self.installment)
     installmentNumber: number
 
     @Column('decimal', { precision: 13, scale: 2 })
@@ -25,6 +23,9 @@ export class TransactionInstallmentConciliation {
     paymentDate: Date
 
     @OneToOne(_ => TransactionInstallment, i => i.conciliation)
-    @JoinColumn()
+    @JoinColumn([
+        { name: 'transaction_id', referencedColumnName: 'transactionId' },
+        { name: 'installment_number', referencedColumnName: 'installmentNumber' }
+    ])
     installment: TransactionInstallment
 }

@@ -8,14 +8,13 @@ export class TransactionConciliation {
         this.baseTax = baseTax
     }
 
-    @PrimaryColumn({ length: 37 })
-    @RelationId((self: TransactionConciliation) => self.transaction)
+    @PrimaryColumn({length: 37 })
     transactionId: string
 
     @Column('decimal', { precision: 5, scale: 2 })
     baseTax: number
 
     @OneToOne(_ => Transaction, t => t.conciliation)
-    @JoinColumn()
+    @JoinColumn({ name: 'transaction_id', referencedColumnName: 'id' })
     transaction: Transaction
 }

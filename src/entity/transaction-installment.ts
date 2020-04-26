@@ -11,7 +11,6 @@ export class TransactionInstallment {
     }
 
     @PrimaryColumn({ length: 37 })
-    @RelationId((self: TransactionInstallment) => self.transaction)
     transactionId: string
 
     @PrimaryColumn('tinyint')
