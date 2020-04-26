@@ -4,6 +4,8 @@ import { DEFAULT_OFFSET, DEFAULT_LIMIT } from './constants'
 import { Connection, InsertResult } from 'typeorm'
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity'
 import { Response } from 'express'
+import Decimal from 'decimal.js'
+import { getUsdSellValue } from './clients/hgbrasil/calls'
 
 export const hashPassword = async (password: string): Promise<string> => {
     return await bcrypt.hash(password, SALT_ROUNDS)
@@ -41,4 +43,9 @@ export const mapper = <S,T>(map: (source: S) => Promise<T>) =>
     async (source: S): Promise<T> => {
         if (!source) return undefined
         return await map(source)
+}
+
+export const getUsdValue = async (brlValue: number): Promise<number> => {
+    const usdSellValue = await getUsdSellValue()
+    return Decimal.div(brlValue, usdSellValue).toSignificantDigits(2).toNumber()
 }

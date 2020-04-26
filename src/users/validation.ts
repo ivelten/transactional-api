@@ -2,14 +2,13 @@ import { ValidationArguments, ValidationOptions, registerDecorator } from 'class
 import { getConnection } from 'typeorm'
 import { User } from '../entity/user'
 
-export function IsUserNameAlreadyInUse(validationOptions?: ValidationOptions) {
+export function IsUserNameAlreadyInUse(validationOptions?: ValidationOptions): PropertyDecorator {
     return function (object: Object, propertyName: string) {
         if (!validationOptions) {
             validationOptions = { 
                 message: `${propertyName} contains an user name that is already been used by another user`
             }
         }
-
         registerDecorator({
             target: object.constructor,
             propertyName: propertyName,
@@ -26,11 +25,10 @@ export function IsUserNameAlreadyInUse(validationOptions?: ValidationOptions) {
     }
 }
 
-export function IsUserEmailAlreadyInUse(validationOptions?: ValidationOptions) {
+export function IsUserEmailAlreadyInUse(validationOptions?: ValidationOptions): PropertyDecorator {
     return function (object: Object, propertyName: string) {
         if (!validationOptions)
             validationOptions = { message: `${propertyName} contains an e-mail that is already been used by another user` }
-
         registerDecorator({
             target: object.constructor,
             propertyName: propertyName,

@@ -1,5 +1,4 @@
 import { Entity, PrimaryGeneratedColumn, Column, Unique } from 'typeorm'
-import Decimal from 'decimal.js'
 
 @Entity()
 export class CreditCard {
@@ -11,11 +10,11 @@ export class CreditCard {
     number: string
 
     @Column('decimal', { precision: 13, scale: 2 })
-    limit: Decimal
+    limit: number
 
     @Column('decimal', { precision: 13, scale: 2 })
-    balance: Decimal
+    balance: number
 
     @Column()
-    blocked: boolean
+    active: boolean
 }

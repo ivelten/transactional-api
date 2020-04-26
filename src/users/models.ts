@@ -11,11 +11,13 @@ export interface ICreateUserRequestModel {
 
 export class CreateUserRequestModel implements ICreateUserRequestModel {
     constructor(model: ICreateUserRequestModel) {
-        this.firstName = model.firstName
-        this.lastName = model.lastName
-        this.userName = model.userName
-        this.email = model.email
-        this.password = model.password
+        if (model) {
+            this.firstName = model.firstName
+            this.lastName = model.lastName
+            this.userName = model.userName
+            this.email = model.email
+            this.password = model.password
+        }
     }
 
     @IsNotEmpty()
@@ -36,7 +38,6 @@ export class CreateUserRequestModel implements ICreateUserRequestModel {
 
     @IsNotEmpty()
     @IsEmail()
-    @MaxLength(254)
     @IsUserEmailAlreadyInUse()
     email: string
 

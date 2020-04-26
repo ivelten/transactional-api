@@ -1,66 +1,93 @@
-import { IsString, IsDecimal, IsNotEmpty, IsNumber, MaxLength, IsBoolean, IsCreditCard } from 'class-validator'
-import Decimal from 'decimal.js'
+import { IsString, IsNumber, MaxLength, IsBoolean, IsCreditCard, IsOptional, IsInt, ValidateNested } from 'class-validator'
+import { IsCreditCardUsable } from './validation'
+
+export interface IPaymentModel {
+    creditCardNumber: string
+    value: number
+    installmentCount?: number
+}
+
+export class PaymentModel implements IPaymentModel {
+    constructor(model: IPaymentModel) {
+        if (model) {
+            this.creditCardNumber = model.creditCardNumber
+            this.value = model.value
+            this.installmentCount = model.installmentCount
+        }
+    }
+
+    creditCardNumber: string
+
+    @IsNumber({ maxDecimalPlaces: 2, allowNaN: false, allowInfinity: false }, { message: "value must be a monetary value in BRL coin (number with two decimal places)" })
+    value: number
+
+    @IsInt()
+    @IsOptional()
+    installmentCount?: number
+}
 
 export interface IAuthorizeTransactionRequestModel {
-    value: Decimal
-    installmentCount?: number
     customerName?: string
     invoiceNumber?: string
     customerDocument?: string
     autoCapture?: boolean
-    creditCardNumber: string
+    payment: IPaymentModel
 }
 
 export class AuthorizeTransactionRequestModel implements IAuthorizeTransactionRequestModel {
     constructor(model: IAuthorizeTransactionRequestModel) {
-        this.value = model.value
-        this.installmentCount = model.installmentCount
-        this.customerName = model.customerName
-        this.invoiceNumber = model.invoiceNumber
-        this.customerDocument = model.customerDocument
-        this.autoCapture = model.autoCapture
+        if (model) {
+            this.customerName = model.customerName
+            this.invoiceNumber = model.invoiceNumber
+            this.customerDocument = model.customerDocument
+            this.autoCapture = model.autoCapture
+            this.payment = new PaymentModel(model.payment)
+        }
     }
 
-    @IsNotEmpty()
-    @IsDecimal({ decimal_digits: '2,2' })
-    value: Decimal
-
-    @IsNumber({ maxDecimalPlaces: 0 })
-    installmentCount?: number
-
     @IsString()
+    @IsOptional()
     @MaxLength(100)
     customerName?: string
 
     @IsString()
+    @IsOptional()
     @MaxLength(100)
     invoiceNumber?: string
 
     @IsString()
+    @IsOptional()
     @MaxLength(15)
     customerDocument?: string
 
     @IsBoolean()
+    @IsOptional()
     autoCapture?: boolean
 
-    @IsCreditCard()
-    @MaxLength(16)
-    creditCardNumber: string
+    @IsCreditCardUsable()
+    @ValidateNested()
+    payment: IPaymentModel
 }
 
 export interface ICaptureTransactionModel {
     transactionId: string
 }
 
+export class CaptureTransactionModel implements ICaptureTransactionModel {
+    @IsString()
+    @MaxLength(37)
+    transactionId: string
+}
+
 export interface IProcessedTransactionInstallmentModel {
     installmentNumber: number
-    value: Decimal
+    value: number
 }
 
 export interface IProcessedTransactionResponseModel {
     transactionId: string
-    value: Decimal
-    usdValue: Decimal
+    value: number
+    usdValue: number
     customerName?: string
     invoiceNumber?: string
     customerDocument?: string

@@ -1,11 +1,18 @@
 import { Entity, PrimaryColumn, Column, ManyToOne, OneToOne, RelationId } from 'typeorm'
-import { Decimal } from 'decimal.js'
 import { Transaction } from './transaction'
 import { TransactionInstallmentConciliation } from './transaction-installment-conciliation'
 
 @Entity()
 export class TransactionInstallment {
-    @PrimaryColumn({ length: 32 })
+    constructor(installmentNumber: number, value: number, transaction: Transaction) {
+        if (transaction) {
+            this.transactionId = transaction.id
+            this.installmentNumber = installmentNumber
+            this.value = value
+        }
+    }
+
+    @PrimaryColumn({ length: 37 })
     @RelationId((self: TransactionInstallment) => self.transaction)
     transactionId: string
 
@@ -13,7 +20,7 @@ export class TransactionInstallment {
     installmentNumber: number
 
     @Column('decimal', { precision: 13, scale: 2 })
-    value: Decimal
+    value: number
 
     @ManyToOne(_ => Transaction, t => t.installments)
     transaction: Transaction
