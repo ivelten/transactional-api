@@ -5,6 +5,7 @@ import { CreditCard } from '../entity/credit-card'
 import { TransactionConciliation } from '../entity/transaction-conciliation'
 import { User } from '../entity/user'
 import { TransactionInstallment } from '../entity/transaction-installment'
+import { TransactionInstallmentConciliation } from '../entity/transaction-installment-conciliation'
 
 export const saveTransaction = async (transaction: Transaction): Promise<Transaction> => {
     return await getConnection().getRepository(Transaction).save(transaction)
@@ -36,9 +37,10 @@ export const getMerchantBaseTax = async (merchantId: number): Promise<number> =>
     return merchant.baseTax
 }
 
-export const conciliateTransaction = async (transactionId: string, baseTax: number): Promise<void> => {
-    const connection = getConnection()
-    let conciliation = new TransactionConciliation(transactionId, baseTax)
-    conciliation = await connection.getRepository(TransactionConciliation).save(conciliation)
-    const transactions = await connection.getRepository(TransactionInstallment)
+export const saveTransactionConciliation = async (transaction: TransactionConciliation): Promise<TransactionConciliation> => {
+    return await getConnection().getRepository(TransactionConciliation).save(transaction)
+}
+
+export const saveTransactionInstallmentsConciliation = async (installments: TransactionInstallmentConciliation[]): Promise<TransactionInstallmentConciliation[]> => {
+    return await getConnection().getRepository(TransactionInstallmentConciliation).save(installments)
 }

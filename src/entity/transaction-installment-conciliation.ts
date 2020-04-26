@@ -3,6 +3,13 @@ import { TransactionInstallment } from './transaction-installment'
 
 @Entity()
 export class TransactionInstallmentConciliation {
+    constructor(transactionId: string, installmentNumber: number, netValue: number, paymentDate: Date) {
+        this.transactionId = transactionId
+        this.installmentNumber = installmentNumber
+        this.netValue = netValue
+        this.paymentDate = paymentDate
+    }
+
     @PrimaryColumn({ length: 37 })
     @RelationId((self: TransactionInstallmentConciliation) => self.installment)
     transactionId: string
