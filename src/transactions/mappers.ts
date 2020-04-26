@@ -16,7 +16,6 @@ export const mapAuthorizeTransactionRequestToTransaction = (getUsdValue: (brlVal
             request.payment.value,
             usdValue,
             request.payment.installmentCount,
-            request.autoCapture ? now : undefined,
             request.invoiceNumber,
             request.customerName,
             request.customerDocument)

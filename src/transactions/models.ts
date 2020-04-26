@@ -30,7 +30,6 @@ export interface IAuthorizeTransactionRequestModel {
     customerName?: string
     invoiceNumber?: string
     customerDocument?: string
-    autoCapture?: boolean
     payment: IPaymentModel
 }
 
@@ -40,7 +39,6 @@ export class AuthorizeTransactionRequestModel implements IAuthorizeTransactionRe
             this.customerName = model.customerName
             this.invoiceNumber = model.invoiceNumber
             this.customerDocument = model.customerDocument
-            this.autoCapture = model.autoCapture
             this.payment = new PaymentModel(model.payment)
         }
     }
@@ -59,10 +57,6 @@ export class AuthorizeTransactionRequestModel implements IAuthorizeTransactionRe
     @IsOptional()
     @MaxLength(15)
     customerDocument?: string
-
-    @IsBoolean()
-    @IsOptional()
-    autoCapture?: boolean
 
     @IsCreditCardUsable()
     @ValidateNested()

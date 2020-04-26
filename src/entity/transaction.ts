@@ -24,13 +24,11 @@ export class Transaction {
         value: number,
         usdValue: number,
         installmentCount?: number,
-        captureDate?: Date,
         invoiceNumber?: string,
         customerName?: string,
         customerDocument?: string) {
             this.id = id
             this.authorizationDate = authorizationDate
-            this.captureDate = captureDate
             this.creditCardNumber = creditCardNumber
             this.value = value
             this.usdValue = usdValue
@@ -45,9 +43,6 @@ export class Transaction {
 
     @Column('timestamp')
     authorizationDate: Date
-
-    @Column('timestamp', { nullable: true })
-    captureDate: Date
 
     @Column({ length: 100, nullable: true })
     invoiceNumber: string
