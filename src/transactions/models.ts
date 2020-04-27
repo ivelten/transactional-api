@@ -1,5 +1,5 @@
-import { IsString, IsNumber, MaxLength, IsBoolean, IsCreditCard, IsOptional, IsInt, ValidateNested, IsNotEmpty } from 'class-validator'
-import { IsCreditCardUsable } from './validation'
+import { IsString, IsNumber, MaxLength, IsOptional, IsInt, ValidateNested, IsNotEmpty } from 'class-validator'
+import { IsCreditCardUsable, IsUserRegistered } from './validation'
 
 export interface IPaymentModel {
     creditCardNumber: string
@@ -48,6 +48,7 @@ export class AuthorizeTransactionRequestModel implements IAuthorizeTransactionRe
 
     @IsInt()
     @IsNotEmpty()
+    @IsUserRegistered()
     merchantId: number
 
     @IsString()
@@ -71,16 +72,6 @@ export class AuthorizeTransactionRequestModel implements IAuthorizeTransactionRe
     payment: IPaymentModel
 }
 
-export interface ICaptureTransactionModel {
-    transactionId: string
-}
-
-export class CaptureTransactionModel implements ICaptureTransactionModel {
-    @IsString()
-    @MaxLength(37)
-    transactionId: string
-}
-
 export interface IProcessedTransactionInstallmentModel {
     installmentNumber: number
     value: number
@@ -95,11 +86,5 @@ export interface IProcessedTransactionResponseModel {
     customerDocument?: string
     creditCardNumber: string
     authorizationDate?: Date
-    captureDate?: Date
     installments: IProcessedTransactionInstallmentModel[]
-}
-
-export interface IProcessTransactionFailureResponseModel {
-    request: IAuthorizeTransactionRequestModel
-    message: string
 }

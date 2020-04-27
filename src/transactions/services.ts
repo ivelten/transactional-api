@@ -26,6 +26,9 @@ export const get = async (
 }
 
 export const createTransactionInstallments = (transactionId: string, value: number, installmentCount: number): TransactionInstallment[] => {
+    if (!installmentCount)
+        return [ new TransactionInstallment(1, value, transactionId) ]
+
     const otherInstallmentsValue = Decimal.div(value, installmentCount).toDecimalPlaces(2)
     const remainingValue = Decimal.mul(otherInstallmentsValue, installmentCount - 1)
     const firstInstallmentValue = Decimal.sub(value, remainingValue)

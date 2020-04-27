@@ -17,7 +17,7 @@ const createUserSchema = {
         userName: { type: 'string' },
         email: { type: 'string' },
         baseTax: { type: 'number' },
-        password: { type: 'string' }
+        password: { type: 'string', format: 'password' }
     },
     required: [
         'firstName',
