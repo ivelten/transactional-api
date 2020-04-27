@@ -17,16 +17,18 @@ export const getTransactions = (merchantId: number) =>
         const connection = getConnection()
         const merchant = await connection.getRepository(User).findOne(merchantId)
         if (!merchant) return undefined
-        return await connection.getRepository(Transaction).find({
+        console.log(offset)
+        const transactions = await connection.getRepository(Transaction).find({
             where: { merchantId: merchantId },
             take: limit,
             skip: offset,
-            relations: [ 'installments' ]
+            relations: [ 'installments', 'conciliation', 'installments.conciliation' ]
         })
+        return transactions
 })
 
 export const getTransaction = async (id: string): Promise<Transaction> => {
-    return await getConnection().getRepository(Transaction).findOne(id, { relations: [ 'installments' ] })
+    return await getConnection().getRepository(Transaction).findOne(id, { relations: [ 'installments', 'conciliation', 'installments.conciliation' ] })
 }
 
 export const subtractValueFromCreditCardBalance = async (value: number, creditCardNumber: string): Promise<void> => {

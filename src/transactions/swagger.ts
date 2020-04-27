@@ -32,7 +32,14 @@ const authorizedTransactionInstallmentSchema = {
     type: 'object',
     properties: {
         installmentNumber: { type: 'integer' },
-        value: { type: 'number' }
+        value: { type: 'number' },
+        conciliation: {
+            type: 'object',
+            properties: {
+                netValue: { type: 'number' },
+                paymentDate: { type: 'string', format: 'date' }
+            }
+        }
     }
 }
 
@@ -50,6 +57,12 @@ const authorizedTransactionSchema = {
         installments: {
             type: 'array',
             items: authorizedTransactionInstallmentSchema
+        },
+        conciliation: {
+            type: 'object',
+            properties: {
+                baseTax: { type: 'number' }
+            }
         }
     }
 }

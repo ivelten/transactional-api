@@ -19,7 +19,7 @@ export class TransactionInstallmentConciliation {
     @Column('decimal', { name: 'net_value', precision: 13, scale: 2 })
     netValue: number
 
-    @Column('timestamp', { name: 'payment_date' })
+    @Column('date', { name: 'payment_date' })
     paymentDate: Date
 
     @OneToOne(_ => TransactionInstallment, i => i.conciliation)

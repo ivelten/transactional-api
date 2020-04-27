@@ -14,7 +14,7 @@ transactionsRouter.get('/', async (req: Request, res: Response) => {
         const offset: number = parseInt(req.query.offset as string, 10)
         const limit: number = parseInt(req.query.limit as string, 10)
         const getTransactionsOfMerchant = getTransactions(merchantId)
-        const response = await getAll(merchantId, offset, limit, getTransactionsOfMerchant, mapTransactionToProcessedTransactionResponse)
+        const response = await getAll(offset, limit, getTransactionsOfMerchant, mapTransactionToProcessedTransactionResponse)
         sendResponseModel(response, res)
     })
 })

@@ -72,9 +72,19 @@ export class AuthorizeTransactionRequestModel implements IAuthorizeTransactionRe
     payment: IPaymentModel
 }
 
+export interface IProcessedTransactionInstallmentConciliationModel {
+    netValue: number
+    paymentDate: Date
+}
+
 export interface IProcessedTransactionInstallmentModel {
     installmentNumber: number
     value: number
+    conciliation?: IProcessedTransactionInstallmentConciliationModel
+}
+
+export interface IProcessedTransactionConciliationModel {
+    baseTax: number
 }
 
 export interface IProcessedTransactionResponseModel {
@@ -86,5 +96,6 @@ export interface IProcessedTransactionResponseModel {
     customerDocument?: string
     creditCardNumber: string
     authorizationDate?: Date
-    installments: IProcessedTransactionInstallmentModel[]
+    installments: IProcessedTransactionInstallmentModel[],
+    conciliation?: IProcessedTransactionConciliationModel
 }
