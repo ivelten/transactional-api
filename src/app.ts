@@ -3,6 +3,8 @@ import helmet from 'helmet'
 import cors from 'cors'
 import { usersRouter } from './users/router'
 import { transactionsRouter } from './transactions/router'
+import { swaggerDocument } from './swagger'
+import swaggerUi from 'swagger-ui-express'
 
 const createApp = (): Express => {
     const app = express()
@@ -11,6 +13,7 @@ const createApp = (): Express => {
     app.use(express.json())
     app.use('/users', usersRouter)
     app.use('/transactions', transactionsRouter)
+    app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
     return app
 }
 

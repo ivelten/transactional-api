@@ -26,6 +26,6 @@ export class User {
     @OneToMany(_ => Transaction, t => t.merchant)
     transactions: Transaction[]
 
-    @Column('decimal', { name: 'base_tax', precision: 5, scale: 2 })
+    @Column('decimal', { name: 'base_tax', precision: 5, scale: 2, default: 2.5 })
     baseTax: number
 }

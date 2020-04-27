@@ -1,4 +1,4 @@
-import { IsString, Length, IsEmail, IsNotEmpty, MaxLength } from 'class-validator'
+import { IsString, Length, IsEmail, IsNotEmpty, MaxLength, IsNumber, Min, Max, IsOptional } from 'class-validator'
 import { IsUserNameAlreadyInUse, IsUserEmailAlreadyInUse } from './validation'
 
 export interface ICreateUserRequestModel {
@@ -6,6 +6,7 @@ export interface ICreateUserRequestModel {
     lastName: string
     userName: string
     email: string
+    baseTax: number
     password: string
 }
 
@@ -16,6 +17,7 @@ export class CreateUserRequestModel implements ICreateUserRequestModel {
             this.lastName = model.lastName
             this.userName = model.userName
             this.email = model.email
+            this.baseTax = model.baseTax
             this.password = model.password
         }
     }
@@ -40,6 +42,12 @@ export class CreateUserRequestModel implements ICreateUserRequestModel {
     @IsEmail()
     @IsUserEmailAlreadyInUse()
     email: string
+
+    @IsOptional()
+    @IsNumber({ maxDecimalPlaces: 2, allowNaN: false, allowInfinity: false })
+    @Min(0)
+    @Max(100)
+    baseTax: number
 
     @IsNotEmpty()
     @IsString()
