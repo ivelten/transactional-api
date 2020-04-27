@@ -32,9 +32,11 @@ export const mapTransactionInstallmentToProcessedTransactionInstallmentResponse 
 
 export const mapTransactionToProcessedTransactionResponse = 
     mapper(async (transaction: Transaction): Promise<IProcessedTransactionResponseModel> => {
+        const installments = await Promise.all(transaction.installments.map(installment => 
+                mapTransactionInstallmentToProcessedTransactionInstallmentResponse(installment)))
         return {
             creditCardNumber: transaction.creditCardNumber,
-            installments: transaction.installments,
+            installments: installments,
             transactionId: transaction.id,
             usdValue: transaction.usdValue,
             value: transaction.value

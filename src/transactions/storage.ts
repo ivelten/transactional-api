@@ -11,12 +11,22 @@ export const saveTransaction = async (transaction: Transaction): Promise<Transac
     return await getConnection().getRepository(Transaction).save(transaction)
 }
 
-export const getTransactions = paginateWithDefaults(async (offset: number, limit: number): Promise<Transaction[]> => {
-    return await getConnection().getRepository(Transaction).find({ take: limit, skip: offset, relations: [ 'installments' ] })
+export const getTransactions = (merchantId: number) => 
+    paginateWithDefaults(async (offset: number, limit: number): Promise<Transaction[]> => {
+        if (!merchantId) return undefined
+        const connection = getConnection()
+        const merchant = await connection.getRepository(User).findOne(merchantId)
+        if (!merchant) return undefined
+        return await connection.getRepository(Transaction).find({
+            where: { merchantId: merchantId },
+            take: limit,
+            skip: offset,
+            relations: [ 'installments' ]
+        })
 })
 
 export const getTransaction = async (id: string): Promise<Transaction> => {
-    return await getConnection().getRepository(Transaction).findOne(id)
+    return await getConnection().getRepository(Transaction).findOne(id, { relations: [ 'installments' ] })
 }
 
 export const subtractValueFromCreditCardBalance = async (value: number, creditCardNumber: string): Promise<void> => {

@@ -1,6 +1,6 @@
 import { PORT } from './env'
 import { getUsers, getUser, postUser } from './users/swagger'
-import { authorizeTransaction } from './transactions/swagger'
+import { authorizeTransaction, getTransactions, getTransaction } from './transactions/swagger'
 
 export const swaggerDocument = {
     openapi: '3.0.0',
@@ -35,7 +35,11 @@ export const swaggerDocument = {
             get: getUser
         },
         "/transactions": {
+            get: getTransactions,
             post: authorizeTransaction
+        },
+        "/transactions/{id}": {
+            get: getTransaction
         }
     }
 }

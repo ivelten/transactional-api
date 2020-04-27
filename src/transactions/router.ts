@@ -10,9 +10,11 @@ const transactionsRouter = express.Router()
 
 transactionsRouter.get('/', async (req: Request, res: Response) => {
     processRequest(res, async() => {
+        const merchantId: number = parseInt(req.query.merchantId as string, 10)
         const offset: number = parseInt(req.query.offset as string, 10)
         const limit: number = parseInt(req.query.limit as string, 10)
-        const response = await getAll(offset, limit, getTransactions, mapTransactionToProcessedTransactionResponse)
+        const getTransactionsOfMerchant = getTransactions(merchantId)
+        const response = await getAll(merchantId, offset, limit, getTransactionsOfMerchant, mapTransactionToProcessedTransactionResponse)
         sendResponseModel(response, res)
     })
 })

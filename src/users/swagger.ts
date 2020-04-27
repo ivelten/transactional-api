@@ -1,3 +1,5 @@
+import { swaggerPaginationParameters } from '../di'
+
 const userResponseSchema = {
     type: 'object',
     properties: {
@@ -29,27 +31,12 @@ const createUserSchema = {
 }
 
 export const getUsers = {
-    tags: ['Users'],
+    tags: [ 'Users' ],
     operationId: 'getUsers',
-    parameters: [
-        {
-            name: 'offset',
-            in: 'query',
-            description: 'Number of items to skip',
-            required: false,
-            schema: { type: 'integer' }
-        },
-        {
-            name: 'limit',
-            in: 'query',
-            description: 'Number of items to get',
-            required: false,
-            schema: { type: 'integer' }
-        }
-    ],
+    parameters: swaggerPaginationParameters,
     responses: {
         '200': {
-            description: 'Gets all users from the system.',
+            description: 'Users listed',
             content: {
                 'application/json': {
                     schema: {
@@ -63,7 +50,7 @@ export const getUsers = {
 }
 
 export const getUser = {
-    tags: ['Users'],
+    tags: [ 'Users' ],
     operationId: 'getUser',
     parameters: [
         {
@@ -76,7 +63,7 @@ export const getUser = {
     ],
     responses: {
         '200': {
-            description: 'Gets a specific user from the system by its ID.',
+            description: 'User retrieved',
             content: {
                 'application/json': {
                     schema: userResponseSchema
@@ -87,7 +74,7 @@ export const getUser = {
 }
 
 export const postUser = {
-    tags: ['Users'],
+    tags: [ 'Users' ],
     operationId: 'postUser',
     requestBody: {
         content: {
@@ -98,7 +85,7 @@ export const postUser = {
     },
     responses: {
         '200': {
-            description: 'User created.',
+            description: 'User created',
             content: {
                 'application/json': {
                     schema: userResponseSchema

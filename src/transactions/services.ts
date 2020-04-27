@@ -8,11 +8,13 @@ import { TransactionConciliation } from '../entity/transaction-conciliation'
 import { TransactionInstallmentConciliation } from '../entity/transaction-installment-conciliation'
 
 export const getAll = async (
+    merchantId: number,
     offset: number,
     limit: number,
-    getTransactions: (offset: number, limit: number) => Promise<Transaction[]>,
+    getTransactions: (merchantId: number, offset: number, limit: number) => Promise<Transaction[]>,
     mapTransactionToResponse: (transaction: Transaction) => Promise<IProcessedTransactionResponseModel>): Promise<IProcessedTransactionResponseModel[]> => {
-        const transactions = await getTransactions(offset, limit)
+        const transactions = await getTransactions(merchantId, offset, limit)
+        if (!transactions) return undefined
         const response = transactions.map(async (user) => await mapTransactionToResponse(user))
         return Promise.all(response)
 }

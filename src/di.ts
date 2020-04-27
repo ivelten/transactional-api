@@ -49,3 +49,20 @@ export const getUsdValue = async (brlValue: number): Promise<number> => {
     const usdSellValue = await getUsdSellValue()
     return Decimal.div(brlValue, usdSellValue).toSignificantDigits(2).toNumber()
 }
+
+export const swaggerPaginationParameters = [
+    {
+        name: 'offset',
+        in: 'query',
+        description: 'Number of items to skip',
+        required: false,
+        schema: { type: 'integer' }
+    },
+    {
+        name: 'limit',
+        in: 'query',
+        description: 'Number of items to get',
+        required: false,
+        schema: { type: 'integer' }
+    }
+]

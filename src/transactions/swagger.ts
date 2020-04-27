@@ -1,3 +1,5 @@
+import { swaggerPaginationParameters } from '../di'
+
 const paymentSchema = {
     type: 'object',
     properties: {
@@ -52,8 +54,60 @@ const authorizedTransactionSchema = {
     }
 }
 
+export const getTransactions = {
+    tags: [ 'Transactions' ],
+    operationId: 'getTransactions',
+    parameters: [ 
+        ...swaggerPaginationParameters,
+        {
+            name: 'merchantId',
+            in: 'query',
+            description: 'The user ID of the User merchant',
+            required: true,
+            schema: { type: 'integer' }
+        }
+    ],
+    responses: {
+        '200': {
+            description: 'Transactions listed',
+            content: {
+                'application/json': {
+                    schema: {
+                        type: 'array',
+                        items: authorizedTransactionSchema
+                    }
+                }
+            }
+        }
+    }
+}
+
+export const getTransaction = {
+    tags: [ 'Transactions' ],
+    operationId: 'getTransaction',
+    parameters: [
+        {
+            name: 'id',
+            in: 'path',
+            description: 'The ID of the transaction to retrieve',
+            required: true,
+            schema: { type: 'string' }
+        }
+    ],
+    responses: {
+        '200': {
+            description: 'Transaction retrieved',
+            content: {
+                'application/json': {
+                    schema: authorizedTransactionSchema
+                }
+            }
+        }
+    }
+}
+
 export const authorizeTransaction = {
-    tags: ['Transactions'],
+    tags: [ 'Transactions' ],
     operationId: 'authorizeTransaction',
     requestBody: {
         content: {
@@ -64,7 +118,7 @@ export const authorizeTransaction = {
     },
     responses: {
         '200': {
-            description: 'Transaction authorized.',
+            description: 'Transaction authorized',
             content: {
                 'application/json': {
                     schema: authorizedTransactionSchema
