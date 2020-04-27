@@ -1,8 +1,8 @@
-# Brydge Transactional API
+# Transactional API
 
 ## O que é isto
 
-Este é um projeto de API e Portal solicitado pela Brydge como um teste. O projeto permite levantar uma API simples para simular o processamento e conciliação de transações de clientes, calculando o valor em dólar de cada transação e realizando a concliação para o lojista.
+Este é um projeto de teste. O projeto permite levantar uma API simples para simular o processamento e conciliação de transações de clientes, calculando o valor em dólar de cada transação e realizando a concliação para o lojista.
 
 ## Como usar isto
 
@@ -40,7 +40,6 @@ Sempre que você quiser executar a API com a base reiniciada, execute o mesmo co
 A API possui dois endpoints para serem executados, cada um com suas operações específicas.
 Você pode navegar pelas operações disponíveis na API usando a interface do Swagger.
 Considerando que você configurou a variável de ambiente `PORT` para `7000`, por exemplo, a interface do Swagger pode ser acessada em `http://localhost:7000/swagger`.
-
 
 ## Coisas que podem ser implementadas
 
