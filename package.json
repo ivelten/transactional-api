@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "ts-node src/index.ts",
-    "start:new": "ts-node ./node_modules/typeorm/cli.js schema:drop --help && ts-node ./node_modules/typeorm/cli.js schema:sync && ts-node ./node_modules/typeorm-seeding/dist/cli.js seed && ts-node src/index.ts",
+    "start:new": "ts-node ./node_modules/typeorm/cli.js schema:drop && ts-node ./node_modules/typeorm/cli.js schema:sync && ts-node ./node_modules/typeorm-seeding/dist/cli.js seed && ts-node src/index.ts",
     "seed:config": "ts-node ./node_modules/typeorm-seeding/dist/cli.js config",
     "seed:run": "ts-node ./node_modules/typeorm-seeding/dist/cli.js seed",
     "schema:drop": "ts-node ./node_modules/typeorm/cli.js schema:drop",
