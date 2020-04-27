@@ -46,3 +46,4 @@ Considerando que você configurou a variável de ambiente `PORT` para `7000`, po
 - Autenticação
 - Portal
 - Atualização automática dos schemas do swagger ao alterar o código
+- Testes unitários e de integração
