@@ -30,7 +30,7 @@
     "typeorm": "^0.2.24",
     "typeorm-seeding": "^1.6.1",
     "uuid": "^7.0.3",
-    "validator": "^13.0.0"
+    "validator": "^13.7.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^3.0.0",
